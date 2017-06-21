@@ -1,0 +1,15 @@
+
+Implemente una clase Persona que permita guardar los datos personales de las 
+personas que trabajan en una empresa o son clientes de una la misma. Use el 
+patron CRUD para que los objetos queden almacenados en una base de datos 
+relacional usando JDBC. La clase debe proveer un motodo que permita obtener una referencia a cada una 
+de las personas en la base de datos.
+
+ Escriba un programa en el que se muestre el correcto funcionamiento de todas las 
+operaciones de la clase Persona.
+
+ La clase persona debe ofrecer todas las herramientas para un correcto manejo 
+de las situaciones erroneas en la aplicacion, teniendo en cuenta que quede 
+correctamente encapsulado el manejo de la persistencia sin perder el nivel de 
+detalle necesario para resolver los problemas. Procure que el manejo de errores 
+se haga usando una jerarquia de excepciones en lugar de un unico tipo de error general.
