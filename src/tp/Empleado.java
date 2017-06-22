@@ -40,8 +40,10 @@ public class Empleado implements Persona{
 		this.localidad = localidad;
 		this.sector=sector;
 		this.puesto=puesto;
-		this.legajo=this.legajos;
-		legajos++;
+		if(dni!=0){
+			this.legajo=this.legajos;
+			legajos++;
+		}
 		
 	}
 
@@ -150,6 +152,9 @@ public class Empleado implements Persona{
 	public void setLegajo(int legajo) throws DatoInvalidoException{
 		if(legajo<MIN){
 			throw new DatoInvalidoException("El numero de legajo no es valido");
+		}else if(legajo==MIN){
+			this.legajo=this.legajos;
+			legajos++;
 		}
 		this.legajo = legajo;
 	}
@@ -200,25 +205,20 @@ public class Empleado implements Persona{
 			String eSector;
 			String ePuesto;
 			
+			Empleado e=new Empleado(0, null, null, null, null, null, null, null, null);	
+			
 			//obtener el documento del empleado
 			eDNI=Integer.parseInt(Menu.obtenerDatos("Ingresar numero de documento"));
+			e.setDni(eDNI);
 			//obtener apellido del empleado
 			eApellido=Menu.obtenerDatos("Ingresar Apellido/s");
+			e.setApellido(eApellido);
 			//obtener nombre del empleado
 			eNombre=Menu.obtenerDatos("Ingresar Nombre/s");
+			e.setNombre(eNombre);
 			//obtener fecha nacimiento del empleado
 			eF=Menu.obtenerDatos("Ingresar Fecha de Nacimiento(aaaa-mm-dd)");
-			//obtener el genero del empleado
-			eGenero=Menu.obtenerDatos("Ingresar genero");
-			//obtener domicilio del empleado
-			eDomicilio=Menu.obtenerDatos("Ingresar Domicilio");
-			//obtener localidad del empleado
-			eLocalidad=Menu.obtenerDatos("Ingresar Localidad");
-			//obtener sector al que esta asignado el empleado
-			eSector=Menu.obtenerDatos("Ingresar Sector Designado");
-			//obtener el puesto del empleado
-			ePuesto=Menu.obtenerDatos("Ingresar Puesto del empleado");
-	
+
 			//Pasar de un String a Date la fecha de nacimiento
 			SimpleDateFormat fecha=new SimpleDateFormat("yyyy-MM-dd");
 			try{
@@ -227,14 +227,32 @@ public class Empleado implements Persona{
 				throw new DatoInvalidoException("La fecha ingresada no es valida", ex);
 			}
 			
+			e.setFechaNacimiento(eFNacimiento);
+			
+			//obtener el genero del empleado
+			eGenero=Menu.obtenerDatos("Ingresar genero");
+			e.setGenero(eGenero);
+			//obtener domicilio del empleado
+			eDomicilio=Menu.obtenerDatos("Ingresar Domicilio");
+			e.setDomicilio(eDomicilio);
+			//obtener localidad del empleado
+			eLocalidad=Menu.obtenerDatos("Ingresar Localidad");
+			e.setLocalidad(eLocalidad);
+			//obtener sector al que esta asignado el empleado
+			eSector=Menu.obtenerDatos("Ingresar Sector Designado");
+			e.setSector(eSector);
+			//obtener el puesto del empleado
+			ePuesto=Menu.obtenerDatos("Ingresar Puesto del empleado");
+			e.setPuesto(ePuesto);
+			
 			//Crea un nuevo objeto tipo Cliente con los datos del cliente ingresado
-			Empleado e=new Empleado(eDNI, eApellido, eNombre, eFNacimiento, eGenero, eDomicilio, eLocalidad, eSector, ePuesto);	
 			System.out.println("DNI: "+e.dni+"\tApellido: "+e.apellido+"\tNombre: "+e.nombre+"\tFecha de Nacimiento: "+e.fechaNacimiento+"\tGenero: "+e.genero+"\tDomicilio: "+e.domicilio+"\tLocalidad: "+e.localidad+"\tSector: "+e.sector+"\tPuesto: "+e.puesto);
 			//Verifica si el empleado con ese numero de documento ya existe
-			Empleado bEmpleado=en.buscarEmpleadoDNI(eDNI);
+			Empleado bEmpleado=en.buscarEmpleadoDNI(e.dni);
 			if(bEmpleado.apellido!=null){
-					throw new EmpleadoInvalidoException("El empleado con el numero de documento: "+eDNI+"ya esta cargado");
+					throw new EmpleadoInvalidoException("El empleado con el numero de documento: "+e.dni+"ya esta cargado");
 			}
+			e.setLegajo(MIN);
 			//Carga los datos del objeto cliente en la base de datos 
 			en.agregarEmpleado(e);
 		}catch(NumberFormatException ex){

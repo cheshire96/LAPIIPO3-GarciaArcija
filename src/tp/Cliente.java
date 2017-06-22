@@ -149,24 +149,20 @@ public class Cliente implements Persona{
 			String f=null;
 			ClienteCRUD cn=new ClienteCRUD();
 	
+			//Crea un nuevo objeto tipo Cliente para guardar los datos del cliente ingresado
+			Cliente a=new Cliente(0, null, null, null,null, null, null);
 			
 			//obtener el documento del cliente
 			cDNI=Integer.parseInt(Menu.obtenerDatos("Ingresar numero de documento"));
+			a.setDni(cDNI);
 			//obtener apellido del cliente
 			cApellido=Menu.obtenerDatos("Ingresar Apellido/s");
+			a.setApellido(cApellido);
 			//obtener nombre del cliente
 			cNombre=Menu.obtenerDatos("Ingresar Nombre/s");
+			a.setNombre(cNombre);
 			//obtener fecha nacimiento del cliente
 			f=Menu.obtenerDatos("Ingresar Fecha de Nacimiento(aaaa-mm-dd)");
-			//obtener el genero
-			cGenero=Menu.obtenerDatos("Ingresar genero");
-			//obtener domicilio del cliente
-			cDomicilio=Menu.obtenerDatos("Ingresar Domicilio");
-			//obtener localidad del cliente
-			cLocalidad=Menu.obtenerDatos("Ingresar Localidad");
-			
-	//----------------------------------------------------------		
-	//obtener la fecha de nacimiento
 			
 			//Pasar de un String a Date la fecha de nacimiento
 			SimpleDateFormat fecha=new SimpleDateFormat("yyyy-MM-dd");
@@ -179,16 +175,24 @@ public class Cliente implements Persona{
 			}
 			
 	//----------------------------------------------------------		
+			a.setFechaNacimiento(cFNacimiento);
+			//obtener el genero
+			cGenero=Menu.obtenerDatos("Ingresar genero");
+			a.setGenero(cGenero);
+			//obtener domicilio del cliente
+			cDomicilio=Menu.obtenerDatos("Ingresar Domicilio");
+			a.setDomicilio(cDomicilio);
+			//obtener localidad del cliente
+			cLocalidad=Menu.obtenerDatos("Ingresar Localidad");
+			a.setLocalidad(cLocalidad);
 			
-	//Crea un nuevo objeto tipo Cliente con los datos del cliente ingresado
-			Cliente a=new Cliente(cDNI, cApellido, cNombre, cFNacimiento ,cGenero, cDomicilio, cLocalidad);
 			System.out.println("DNI: "+a.dni+"\tApellido: "+a.apellido+"\tNombre: "+a.nombre+"\tFecha de Nacimiento: "+a.fechaNacimiento+"\tGenero: "+a.genero+"\tDomicilio: "+a.domicilio+"\tLocalidad: "+a.localidad);
 			
 			
 			//verifica si el cliente con ese numero de dni no exista
-			Cliente bCliente=cn.buscarCliente(cDNI);
+			Cliente bCliente=cn.buscarCliente(a.dni);
 			if(bCliente.apellido!=null){//si existe lanza una excepcion
-					throw new ClienteInvalidoException("El cliente con el numero de documento: "+cDNI+"ya esta cargado");
+					throw new ClienteInvalidoException("El cliente con el numero de documento: "+a.dni+"ya esta cargado");
 			}
 			
 			//Carga los datos del objeto cliente en la base de datos 
